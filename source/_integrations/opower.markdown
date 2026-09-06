@@ -213,7 +213,7 @@ The Energy dashboard then stacks the periods in one graph and lists usage and co
 
 ![Screenshot Energy dashboard with one source per rate period](/images/integrations/opower/energy_rate_periods.png)
 
-Period statistics only cover the daily and hourly history. Monthly bill data has no breakdown, so the periods show `0` before the daily history starts while the totals still have data.
+Period statistics are only written for reads that carry the breakdown and whose period values add up to the read. Monthly bill data has no breakdown, and on some utilities the daily breakdown does not add up while the hourly one does, so a period can have less history than the account totals. Reads that are skipped leave a gap rather than a `0`.
 
 If you have solar, the periods and the account can disagree on daily data. A daily read is one net number for the account, but one net number per period. A day can be a net export for the account while one of its periods is a net import. Hourly data reconciles, so the difference is limited to history older than two months.
 
@@ -230,7 +230,7 @@ With the above changes your (**{% my config_energy title="Settings > Dashboards 
 - For some utilities, the usage/cost sensors might disappear or become unavailable at the beginning of your bill period.
 - Sensors for typical monthly usage and cost are not populated for accounts younger than a year.
 - Many utilities provide granular usage (for example, daily or hourly) but not cost. They only provide cost for billing periods (for example, month). This results in showing 0 for cost.
-- Per rate period statistics (time-of-use periods or tiers) are only created for utilities whose data includes the breakdown, and only for daily and hourly history. Monthly bill data has no breakdown.
+- Per rate period statistics (time-of-use periods or tiers) are only created for utilities whose data includes the breakdown, and only from reads whose period values add up to the read. Monthly bill data has no breakdown. On net metered accounts the account totals use the meter's import and export registers where the utility provides them, while the periods only have the net per period, so the periods can sum slightly below the totals.
 - For some utilities, the account number displayed in Home Assistant might not match the account number on your utility bill or web portal. This is expected behavior. The integration uses an internal identifier from the Opower system (`preferredUtilityAccountId`), which can differ from your public billing account number (`accountName`). It does not mean you are connected to anyone else's account or that you are seeing someone else's statistics.
 
 ## Troubleshooting
